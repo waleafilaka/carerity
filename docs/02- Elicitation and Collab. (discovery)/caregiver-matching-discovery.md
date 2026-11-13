@@ -2,9 +2,9 @@
 
 **Document ID:** CAR-DISC-001  
 
-**Version:** 0.1  
+**Version:** 0.2  
 
-**Status:** Draft — Discovery & Validation  
+**Status:** Discovery in progress; matching operating rules approved 12 November 2026  
 
 **Project:** Carerity  
 
@@ -14,7 +14,7 @@
 
 **Document Type:** Business Analysis — Discovery Findings  
 
-**Evidence Status:** Preliminary observations and hypotheses pending validation
+**Evidence Status:** Preliminary observations and hypotheses remain pending validation. Matching process rules in Section 5 are approved business requirements as of 12 November 2026.
 
 ---
 
@@ -26,11 +26,11 @@ A critical business capability is the platform's ability to identify, engage, an
 
 This discovery assessment examines potential sources of caregiver-matching delays, identifies operational and system constraints, and establishes an evidence-based approach for evaluating matching performance.
 
-The objective is to identify opportunities to improve matching efficiency, customer experience, caregiver utilization, and operational scalability without compromising mandatory eligibility requirements.
+On 12 November 2026, Carerity approved revised matching operating rules. Eligible caregivers are invited concurrently; invitations remain open for interest until customer confirmation, cancellation, or Admin closure of the search; only interested caregivers are presented to the customer, one at a time, ranked by match score; confirmation produces an exclusive assignment; and Admin intervention follows defined two-hour timers without automatically terminating the live search. These rules supersede the earlier top-10 / two-wave outreach model recorded in Section 5.2.
+
+The discovery objective remains to identify opportunities to improve matching efficiency, customer experience, caregiver utilization, and operational scalability without compromising mandatory eligibility requirements.
 
 ## 2. Business Problem & Opportunity
-
-
 
 ### 2.1 Problem Statement
 
@@ -52,16 +52,14 @@ The relative contribution of each factor has not yet been established.
 The following figures are preliminary working assumptions for analysis and are **not verified production performance measurements**.
 
 | Indicator | Preliminary Figure | Validation Required |
-
 |---|---|---|
-
 | Average wait for non-immediate matches | Approximately 3.5 hours | Confirm measurement definition, population, and timestamps |
-
 | Requests unmatched after one hour | Approximately 30% | Validate request cohort and match definition |
-
 | Proposed performance objective | 80% matched within 30 minutes | Confirm feasibility and business approval |
 
 These figures must not be used as established operational KPIs until supported by reliable system data or documented stakeholder evidence.
+
+The 12 November 2026 matching-rule approval does not, by itself, validate these performance figures.
 
 ### 2.3 Business Impact
 
@@ -77,8 +75,6 @@ Potential consequences of delayed matching include:
 These impacts require prioritization and, where possible, quantitative assessment.
 
 ## 3. Initial Observations & Areas for Investigation
-
-
 
 ### 3.1 Time-Based Matching Performance
 
@@ -133,57 +129,76 @@ The matching capability must account for the following eligibility consideration
 2. Availability for the requested service period
 3. Geographic proximity and permitted service radius
 4. Mandatory care qualifications and capabilities
-5. Customer language preferences, where applicable
-
-
+5. Hard customer restrictions, including mandatory caregiver gender where specified
+6. Customer language preferences, where applicable as a mandatory or preference-based rule
 
 ### 4.1 Mandatory Requirements
 
-The following must not be bypassed:
+The following must not be bypassed during automated matching, Admin-renewed outreach, or manual sourcing:
 
 - Required caregiver verification
 - Mandatory care qualifications
 - Safety and compliance requirements
 - Actual caregiver availability
 - Essential customer care requirements
+- Hard customer restrictions, including a mandatory caregiver gender requirement when the customer has specified one
+- Scheduling and conflict checks that prevent overlapping confirmed assignments
 
-
+Admin may source and assign a caregiver only if the customer approves the assignment and the caregiver satisfies the same mandatory eligibility, scheduling and conflict checks as automated assignment.
 
 ### 4.2 Configurable Preferences
 
 Non-mandatory preferences may be assessed for controlled flexibility, subject to customer consent and approved business rules.
 
-Any flexibility must be clearly distinguished from mandatory eligibility requirements.
+Any flexibility must be clearly distinguished from mandatory eligibility requirements and hard customer restrictions.
 
-## 5. Operational Process Considerations
+## 5. Approved Matching Process (12 November 2026)
 
-Carerity's matching workflow includes automated caregiver identification and outreach, caregiver expression of interest, customer selection, and confirmed assignment.
+Carerity's matching workflow comprises automated caregiver identification and invitation, non-exclusive caregiver interest, sequential customer review of interested caregivers, confirmed assignment, and Admin escalation when defined timers expire.
 
-The current product design also incorporates:
+### 5.1 Approved Operating Rules
 
-- Ranked outreach to eligible caregivers
-- Time-based outreach waves
-- Customer review of interested caregivers
-- Escalation of unresolved matching requests to Operations
-- Assignment controls intended to prevent conflicting bookings
+1. **Eligibility filter.** Invite all caregivers who pass mandatory eligibility, availability, verification and proximity checks. Do not limit outreach to a top-N subset.
+2. **Open invitations.** Caregiver invitations remain open for interest until the customer confirms an assignment, the request is cancelled, or Admin closes the search. There is no automatic wave-based offer expiry.
+3. **Non-exclusive interest.** A caregiver's expression of interest does not reserve the request. Multiple eligible caregivers may express interest in the same request while invitations remain open.
+4. **Customer presentation.** Present only caregivers who have expressed interest and who still pass eligibility and availability checks. Present them one at a time, ranked by match score. Do not rank or sequence presentation by response time. Waiting candidates may be re-ranked when appropriate; the caregiver currently being reviewed must not be unexpectedly replaced.
+5. **Customer decline.** The customer may decline the presented caregiver and view the next highest-ranked interested caregiver.
+6. **Customer confirmation.** Confirmation triggers atomic assignment: revalidate conflicts, close all remaining offers on the request, and terminate matching timers immediately.
+7. **No-interest escalation.** If no caregiver expresses interest within two hours of matching start, Admin intervention begins. The live search is not terminated automatically.
+8. **Customer decision deadline.** When the first valid caregiver interest is recorded, start a separate two-hour customer decision timer. This timer begins whether or not the customer has opened the matching screen, and is independent of the no-interest escalation timer. If the customer has not confirmed an assignment when this timer expires, Admin intervention begins. The live search is not terminated automatically.
+9. **Admin controls.** At either two-hour escalation threshold, Admin may monitor matching, continue it, pause it, stop it, or close the search. Admin may initiate a one-hour renewed outreach, or manually source caregivers. Manual assignment requires customer approval and the same mandatory eligibility, scheduling and conflict checks as automated assignment. Admin may also close the request as unavailable.
+10. **Notifications.** Matching events must continue to generate in-app and push notifications for the affected customer, caregiver and, where applicable, Admin.
 
-These design elements should be verified against the implemented application and documented separately as functional requirements and process flows.
+These rules are approved business requirements. Implementation evidence against the live application remains a separate current-state assessment.
 
-### 5.1 Operational Questions
+### 5.2 Superseded Matching Rules
 
-- At which stage does the greatest delay occur?
-- How long does caregiver outreach take?
-- How quickly do eligible caregivers express interest?
-- How long do customers take to confirm a caregiver?
-- What proportion of requests require manual intervention?
-- How effective is manual matching?
+The following design, previously recorded as the intended product matching model, is **superseded** by the 12 November 2026 approval and must not be treated as current requirements:
+
+| Superseded rule | Prior intent | Replacement |
+|---|---|---|
+| Top-10 eligible-caregiver outreach | Limit invitations to a ranked subset of eligible caregivers | Invite all caregivers who pass mandatory eligibility, availability, verification and proximity checks |
+| Two-wave / time-based outreach | Release invitations in sequential time-based waves | Concurrent invitation of the full eligible set at matching start; invitations remain open until confirmation, cancellation or Admin closure |
+| Automatic wave-based offer expiry | Offers expire when a wave ends or a subsequent wave starts | No automatic wave-based offer expiry; offers close on customer confirmation, request cancellation or Admin closure of the search |
+| Presentation ordered by caregiver response time | Prefer faster respondents to the customer | Present interested caregivers one at a time, ordered by match score after eligibility and availability checks; re-rank waiting candidates without replacing the caregiver currently under review |
+| Automatic search termination at SLA expiry | Matching stops when an outreach or escalation timer expires | At either two-hour threshold, Admin intervention begins; the live search continues unless Admin pauses, stops or closes it |
+
+Historical discovery notes that ranked, time-based outreach waves were part of the earlier product design remain valid as a record of that design. They are not current operating rules.
+
+### 5.3 Operational Questions Still Requiring Evidence
+
+The approved timers and workflow define expected process behaviour. The following measurement questions remain open:
+
+- At which stage does the greatest delay currently occur?
+- How quickly do eligible caregivers express interest under concurrent, open invitation?
+- How long do customers take to confirm or decline a presented caregiver?
+- What proportion of requests reach the two-hour no-interest escalation?
+- What proportion of requests exhaust the two-hour customer decision window?
+- How often does Admin continue, pause, stop or close a live search after escalation?
+- How effective are Admin renewed outreach and manual assignment?
 - Which system events are currently recorded for analysis?
 
-
-
 ## 6. Root-Cause Hypotheses
-
-
 
 ### H1 — Caregiver Availability
 
@@ -194,8 +209,6 @@ These design elements should be verified against the implemented application and
 - Request volume by hour and day
 - Eligible caregiver availability by hour and day
 - Matching duration and outcome by time period
-
-
 
 ### H2 — Specialized Care Capability
 
@@ -208,8 +221,6 @@ These design elements should be verified against the implemented application and
 - Caregiver availability during requested care periods
 - Matching success rates by care type
 
-
-
 ### H3 — Geographic Distribution
 
 **Hypothesis:** Geographic differences in eligible caregiver supply contribute to variation in matching performance.
@@ -220,8 +231,6 @@ These design elements should be verified against the implemented application and
 - Eligible caregivers by geographic area
 - Service-radius eligibility results
 - Matching performance by geography
-
-
 
 ### H4 — Caregiver Profile Data Quality
 
@@ -234,8 +243,6 @@ These design elements should be verified against the implemented application and
 - Capability record completeness
 - Matching exclusion reasons
 
-
-
 ### H5 — Combined Matching Constraints
 
 **Hypothesis:** Interactions between multiple matching constraints may substantially reduce the eligible caregiver pool.
@@ -245,7 +252,7 @@ These design elements should be verified against the implemented application and
 - Eligible caregiver counts at each filtering stage
 - Exclusion reasons by business rule
 - Matching outcomes by combinations of requirements
-- Mandatory versus preference-based exclusions
+- Mandatory versus preference-based exclusions, including hard gender restrictions
 
 **Assessment Status:** All hypotheses remain open pending evidence-based evaluation.
 
@@ -254,24 +261,17 @@ These design elements should be verified against the implemented application and
 The investigation will assess whether Carerity's existing data model supports the following information requirements.
 
 | Data Domain | Required Information | Business Purpose |
-
 |---|---|---|
-
 | Care Requests | Request ID, creation time, requested care period, care type | Measure demand |
-
-| Caregivers | Caregiver ID, approval status, qualifications, capabilities | Assess eligible supply |
-
+| Caregivers | Caregiver ID, approval status, qualifications, capabilities, gender where required for restriction checks | Assess eligible supply |
 | Availability | Available dates, times, last update | Evaluate capacity |
-
 | Geography | Service location, caregiver service radius | Assess geographic coverage |
-
-| Matching | Search start, eligibility outcomes, outreach timestamps | Measure process performance |
-
-| Interest | Caregiver interest timestamps | Measure caregiver response |
-
-| Assignment | Customer confirmation and assignment timestamps | Measure completed matches |
-
-| Operations | Escalations, manual actions, resolution outcomes | Assess intervention effectiveness |
+| Matching | Search start, eligibility outcomes, invitation timestamps, match scores, search pause/stop/close | Measure process performance |
+| Interest | Caregiver interest timestamps; first valid interest timestamp that starts the customer decision timer, independent of whether the customer has opened the matching screen | Measure caregiver response and timer start |
+| Assignment | Customer confirmation, conflict revalidation, offer closure and assignment timestamps | Measure completed matches |
+| Timers | No-interest two-hour timer; customer-decision two-hour timer; Admin one-hour renewed outreach; timer events must not imply automatic search termination | Assess SLA adherence and escalation |
+| Operations | Escalations, continue/pause/stop/close, renewed outreach, manual sourcing with customer approval, unavailable closures | Assess intervention effectiveness |
+| Notifications | In-app and push notification events for matching, interest, presentation, confirmation and escalation | Confirm communication coverage |
 
 ### 7.1 Proposed Performance Measures
 
@@ -279,43 +279,55 @@ The investigation will assess whether Carerity's existing data model supports th
 - Percentage of requests confirmed within 30 minutes
 - Percentage of requests unmatched after 60 minutes
 - Eligible caregivers per active request
-- Caregiver outreach response rate
-- Customer confirmation rate
-- Manual escalation rate
-- Unfulfilled care request rate
+- Caregiver invitation coverage (eligible invited versus eligible identified)
+- Caregiver interest rate
+- Customer confirmation rate and decline-to-next rate
+- Two-hour no-interest escalation rate
+- Two-hour customer decision expiry rate
+- Admin continue / pause / stop / close rates after escalation
+- Manual escalation and Admin resolution outcomes
+- Unfulfilled / closed-as-unavailable request rate
 
 Metric definitions, calculation logic, and reporting populations must be agreed before implementation.
 
+A successful match is defined as a customer-confirmed assignment, not caregiver interest alone.
+
 ## 8. Outstanding Discovery Questions
 
-1. What constitutes a successful match: caregiver interest or customer-confirmed assignment?
-2. What is the agreed definition of a delayed match?
-3. What constitutes an unsuccessful or unfulfilled care request?
-4. Which matching stages account for the greatest elapsed time?
-5. How do caregiver availability and demand vary throughout the day?
-6. Which mandatory requirements most frequently reduce the eligible pool?
-7. How reliable and current are caregiver availability records?
-8. How does matching performance differ across service areas?
-9. How frequently are requests escalated to Operations?
-10. What percentage of escalated requests result in successful assignments?
-11. Which required timestamps and events are currently captured?
-12. What performance objectives are operationally feasible and commercially meaningful?
+Resolved by the 12 November 2026 approval:
 
+1. A successful match is a customer-confirmed assignment, not caregiver interest alone.
+2. Matching outreach is not limited to a top-10 subset and is not released in two waves.
+3. Caregiver invitations remain open for interest until customer confirmation, request cancellation, or Admin closure of the search. Automatic wave-based offer expiry is removed.
+4. Interested caregivers are presented one at a time by match score after eligibility and availability checks. Waiting candidates may be re-ranked; the caregiver currently under review is not unexpectedly replaced.
+5. Defined SLA timers are: two hours with no caregiver interest (Admin intervention); two hours for customer decision after the first valid interest is recorded, whether or not the customer has opened the matching screen; one hour for Admin renewed outreach. Neither two-hour threshold automatically terminates the live search.
+6. Admin manual assignment requires customer approval and the same mandatory eligibility, scheduling and conflict checks as automated assignment.
 
+Still open:
+
+1. What is the agreed definition of a delayed match relative to the approved timers and the proposed 30-minute objective?
+2. What constitutes an unsuccessful or unfulfilled care request versus an Admin closure as unavailable?
+3. Which matching stages account for the greatest elapsed time in the current application?
+4. How do caregiver availability and demand vary throughout the day?
+5. Which mandatory requirements most frequently reduce the eligible pool, including gender restrictions?
+6. How reliable and current are caregiver availability records?
+7. How does matching performance differ across service areas?
+8. How frequently are requests escalated to Admin under the two-hour no-interest rule?
+9. What percentage of escalated requests result in successful assignments?
+10. Which required timestamps and events are currently captured?
+11. What performance objectives are operationally feasible and commercially meaningful?
 
 ## 9. Recommended Analysis Activities
 
-
-
 ### Activity 1 — Current-State Assessment
 
-Review the existing Carerity application, matching workflow, business rules, and relevant technical documentation.
+Review the existing Carerity application, matching workflow, business rules, and relevant technical documentation against the approved 12 November 2026 operating rules.
 
 **Deliverable:** Current-State Process Assessment
 
 ### Activity 2 — Data Model Review
 
-Identify existing database tables, primary keys, foreign keys, relevant fields, and matching event timestamps.
+Identify existing database tables, primary keys, foreign keys, relevant fields, and matching event timestamps, including timer, interest, offer-closure and notification events.
 
 **Deliverable:** Data Inventory & Entity Relationship Assessment
 
@@ -327,7 +339,7 @@ Translate each root-cause hypothesis into measurable business questions and deve
 
 ### Activity 4 — Requirements Analysis
 
-Document validated business, stakeholder, functional, non-functional, and data requirements.
+Document validated business, stakeholder, functional, non-functional, and data requirements, using Section 5 as the approved matching baseline.
 
 **Deliverable:** Requirements Specification & Traceability Matrix
 
@@ -345,39 +357,40 @@ Translate approved changes into actionable backlog items, acceptance criteria, a
 
 ## 10. Risks, Assumptions & Dependencies
 
-
-
 ### Risks
 
-- Incomplete event logging may prevent accurate performance measurement.
+- Incomplete event logging may prevent accurate performance measurement, including timer start/stop, offer closure and Admin pause/stop/close actions.
 - Caregiver profile data may not reliably reflect real-time availability.
 - Matching optimization could inadvertently weaken essential eligibility safeguards if requirements are not clearly separated.
+- Concurrent invitation of the full eligible set, with invitations remaining open until confirmation, cancellation or Admin closure, may increase notification volume; this must be monitored operationally.
 - Insufficient operational data may limit the reliability of conclusions.
-
-
 
 ### Assumptions
 
 - Matching events can be identified within the existing application or database.
-- Caregiver eligibility rules can be reviewed and documented.
+- Caregiver eligibility rules, including hard gender restrictions, can be reviewed and documented.
 - Relevant stakeholders can clarify operational definitions and expected outcomes.
-
-
+- The 12 November 2026 matching operating rules remain the approved baseline until a further recorded decision supersedes them.
 
 ### Dependencies
 
 - Access to the current application architecture and database schema
-- Confirmation of existing matching business rules
+- Confirmation of existing matching business rules against the approved operating model
 - Availability of reliable data for analysis
 - Business approval of proposed performance targets
 
+## 11. Decision Log
 
+| Date | Decision | Status |
+|---|---|---|
+| 12 November 2026 | Replace top-10 / two-wave outreach with invitation of all eligible caregivers; keep invitations open until confirmation, cancellation or Admin closure (no automatic wave-based offer expiry); present interested caregivers one at a time by match score after eligibility and availability checks, re-ranking waiting candidates without replacing the caregiver under review; start the customer decision timer on first valid interest regardless of whether the customer has opened the matching screen; at either two-hour threshold begin Admin intervention without automatically terminating the live search; Admin may continue, pause, stop or close the search, run a one-hour renewed outreach, or manually source caregivers subject to customer approval and the same eligibility, scheduling and conflict checks as automated assignment; preserve hard restrictions including mandatory caregiver gender; retain in-app and push notifications. | Approved |
+| Prior design (superseded) | Ranked outreach limited to a top subset of eligible caregivers, released in time-based waves with automatic wave-based offer expiry, with customer review of interested caregivers and operational escalation of unresolved requests. | Superseded |
 
-## 11. Next Steps
+## 12. Next Steps
 
-1. Inspect the existing Carerity project architecture.
+1. Inspect the existing Carerity project architecture against the approved matching rules.
 2. Identify relevant Supabase/PostgreSQL tables and relationships.
-3. Map the current caregiver-matching process.
+3. Map the current caregiver-matching process and record gaps versus Section 5.
 4. Establish measurable business questions for hypotheses H1–H5.
 5. Develop SQL queries to assess available evidence.
 6. Document validated findings and evidence gaps.
@@ -385,8 +398,8 @@ Translate approved changes into actionable backlog items, acceptance criteria, a
 
 ---
 
-**Document Status:** Draft — Pending Evidence Validation  
+**Document Status:** Discovery in progress; matching operating rules approved 12 November 2026  
 
-**Version:** 0.1  
+**Version:** 0.2  
 
 **Next Deliverable:** Current-State Data Model & Matching Process Assessment
